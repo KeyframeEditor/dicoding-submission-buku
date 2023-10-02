@@ -80,11 +80,14 @@ const getAllBooksHandler = () => {
   const responseBody = {
     status: 'success',
     data: {
-      notes,
+      books: notes.map((note) => ({
+        id: note.id,
+        name: note.name,
+        publisher: note.publisher,
+      })),
     },
   };
-  const statusCode = 200;
-  return [responseBody, statusCode];
+  return responseBody;
 };
 
 const addNoteHandler = (request, h) => {
