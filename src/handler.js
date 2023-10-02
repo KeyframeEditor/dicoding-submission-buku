@@ -46,7 +46,7 @@ const addBookHandler = (request, h) => {
   const readPageError = (book) => book.readPage > book.pageCount;
 
   // Usage
-  if (isNameEmpty(newBook.name)) {
+  if (isNameEmpty(newBook.name) || newBook.name === undefined) {
     const response = h.response({
       status: 'fail',
       message: 'Gagal menambahkan buku. Mohon isi nama buku',
@@ -74,6 +74,17 @@ const addBookHandler = (request, h) => {
     response.code(201);
     return response;
   }
+};
+
+const getAllBooksHandler = () => {
+  const responseBody = {
+    status: 'success',
+    data: {
+      notes,
+    },
+  };
+  const statusCode = 200;
+  return [responseBody, statusCode];
 };
 
 const addNoteHandler = (request, h) => {
@@ -201,4 +212,5 @@ module.exports = {
   editNotebyIdHandler,
   deleteNoteByIdHandler,
   addBookHandler,
+  getAllBooksHandler,
 };
