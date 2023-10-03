@@ -132,6 +132,30 @@ const getAllNotesHandler = () => ({
   },
 });
 
+const getBookByIdHandler = (request, h) => {
+  const { bookId } = request.params;
+
+  const foundBook = notes.find((book) => book.id === bookId);
+
+  if (!foundBook) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Buku tidak ditemukan',
+    });
+    response.code(404);
+    return response;
+  }
+
+  const response = h.response({
+    status: 'success',
+    data: {
+      book: foundBook,
+    },
+  });
+  response.code(200);
+  return response;
+};
+
 const getNotebyIdHandler = (request, h) => {
   const { id } = request.params;
 
@@ -216,4 +240,5 @@ module.exports = {
   deleteNoteByIdHandler,
   addBookHandler,
   getAllBooksHandler,
+  getBookByIdHandler,
 };
