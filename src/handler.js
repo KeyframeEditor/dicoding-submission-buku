@@ -16,13 +16,34 @@ const addBookHandler = (request, h) => {
     reading,
   } = request.payload;
 
+  // Check if readPage is greater than pageCount
+  if (readPage > pageCount) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
+    });
+    response.code(400);
+    return response;
+  }
+
+  // Check if name is empty or undefined
+  if (name === '' || name === undefined) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal menambahkan buku. Mohon isi nama buku',
+    });
+    response.code(400);
+    return response;
+  }
+
+  // Check if the book is completed (pageCount is 100 and readPage is 100)
+  const finished = pageCount === 100 && readPage === 100;
+
   const id = nanoid(16);
   const insertedAt = new Date().toISOString();
   const updatedAt = insertedAt;
-  const finished = false;
 
   const newBook = {
-    // eslint-disable-next-line max-len
     id, 
     name, 
     year, 
@@ -41,28 +62,6 @@ const addBookHandler = (request, h) => {
 
   const isSuccess = notes.filter((note) => note.id === id).length > 0;
 
-  const isNameEmpty = (book) => book === '';
-
-  const readPageError = (book) => book.readPage > book.pageCount;
-
-  // Usage
-  if (isNameEmpty(newBook.name) || newBook.name === undefined) {
-    const response = h.response({
-      status: 'fail',
-      message: 'Gagal menambahkan buku. Mohon isi nama buku',
-    });
-    response.code(400);
-    return response;
-  }
-
-  if (readPageError(newBook)) {
-    const response = h.response({
-      status: 'fail',
-      message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
-    });
-    response.code(400);
-    return response;
-  }
   if (isSuccess) {
     const response = h.response({
       status: 'success',
