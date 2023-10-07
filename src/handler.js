@@ -177,6 +177,77 @@ const getNotebyIdHandler = (request, h) => {
   return response;
 };
 
+const editBookbyIdHandler = (request, h) => {
+  const { bookId } = request.params;
+
+  // Find the book with the specified ID in the "notes" array
+  const foundBookIndex = notes.findIndex((book) => book.id === bookId);
+
+  // Check if book is found or not
+  if (foundBookIndex === -1) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal memperbarui buku. Id tidak ditemukan',
+    });
+    response.code(404);
+    return response;
+  }
+
+  const foundBook = notes[foundBookIndex];
+
+  const {
+    name, 
+    year, 
+    author, 
+    summary, 
+    publisher, 
+    pageCount, 
+    readPage, 
+    reading,
+  } = request.payload;
+
+  // Check if readPage is greater than pageCount
+  if (readPage > pageCount) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount',
+    });
+    response.code(400);
+    return response;
+  }
+
+  // Check if name is empty or undefined
+  if (!name || name === '') {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal memperbarui buku. Mohon isi nama buku',
+    });
+    response.code(400);
+    return response;
+  }
+
+  // Update the found book with the new values
+  notes[foundBookIndex] = {
+    ...foundBook,
+    name,
+    year,
+    author,
+    summary,
+    publisher,
+    pageCount,
+    readPage,
+    reading,
+    updatedAt: new Date().toISOString(),
+  };
+
+  const response = h.response({
+    status: 'success',
+    message: 'Buku berhasil diperbarui',
+  });
+  response.code(200);
+  return response;
+};
+
 const editNotebyIdHandler = (request, h) => {
   const { id } = request.params;
 
@@ -240,4 +311,5 @@ module.exports = {
   addBookHandler,
   getAllBooksHandler,
   getBookByIdHandler,
+  editBookbyIdHandler,
 };
