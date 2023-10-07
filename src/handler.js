@@ -280,6 +280,33 @@ const editNotebyIdHandler = (request, h) => {
   return response;
 };
 
+const deleteBookByIdHandler = (request, h) => {
+  const { bookId } = request.params;
+
+  // Find the index of the book with the specified ID in the "notes" array
+  const foundBookIndex = notes.findIndex((book) => book.id === bookId);
+
+  // Check if book is found or not
+  if (foundBookIndex === -1) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Buku gagal dihapus. Id tidak ditemukan',
+    });
+    response.code(404); // Set the response status code to 404
+    return response;
+  }
+
+  // Remove the book from the "notes" array using splice
+  notes.splice(foundBookIndex, 1);
+
+  const response = h.response({
+    status: 'success',
+    message: 'Buku berhasil dihapus',
+  });
+  response.code(200); // Set the response status code to 200
+  return response;
+};
+
 const deleteNoteByIdHandler = (request, h) => {
   const { id } = request.params;
 
@@ -312,4 +339,5 @@ module.exports = {
   getAllBooksHandler,
   getBookByIdHandler,
   editBookbyIdHandler,
+  deleteBookByIdHandler,
 };
