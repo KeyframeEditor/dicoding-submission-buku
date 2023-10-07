@@ -1,11 +1,4 @@
-// Berkas Routes
-
 const {
-  addNoteHandler,
-  getAllNotesHandler,
-  getNotebyIdHandler,
-  editNotebyIdHandler,
-  deleteNoteByIdHandler,
   addBookHandler,
   getAllBooksHandler,
   getBookByIdHandler,
@@ -20,24 +13,9 @@ const routes = [
     handler: addBookHandler,
   },
   {
-    method: 'POST',
-    path: '/notes',
-    handler: addNoteHandler,
-  },
-  {
     method: 'GET',
     path: '/books',
     handler: getAllBooksHandler,
-  },
-  {
-    method: 'GET',
-    path: '/notes',
-    handler: getAllNotesHandler,
-  },
-  {
-    method: 'GET',
-    path: '/notes/{id}',
-    handler: getNotebyIdHandler,
   },
   {
     method: 'GET',
@@ -48,16 +26,6 @@ const routes = [
     method: 'PUT',
     path: '/books/{bookId}',
     handler: editBookbyIdHandler,
-  },
-  {
-    method: 'PUT',
-    path: '/notes/{id}',
-    handler: editNotebyIdHandler,
-  },
-  {
-    method: 'DELETE',
-    path: '/notes/{id}',
-    handler: deleteNoteByIdHandler,
   },
   {
     method: 'DELETE',
